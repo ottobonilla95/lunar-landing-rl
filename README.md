@@ -1,4 +1,4 @@
-# Rocket Land 🚀
+# Lunar Landing RL 🚀
 
 Learn reinforcement learning by teaching a neural network to land a rocket in [Gymnasium's Lunar Lander](https://gymnasium.farama.org/environments/box2d/lunar_lander/).
 
@@ -9,8 +9,8 @@ Gymnasium provides the physics, observations, actions, and rewards. This project
 Install [Git](https://git-scm.com/downloads) and [uv](https://docs.astral.sh/uv/getting-started/installation/), then run:
 
 ```sh
-git clone https://github.com/ottobonilla95/rocket-land.git
-cd rocket-land
+git clone https://github.com/ottobonilla95/lunar-landing-rl.git
+cd lunar-landing-rl
 uv sync --locked
 uv run main.py --demo
 ```
@@ -194,11 +194,11 @@ Open [localhost:8080](http://127.0.0.1:8080/) while Netron runs. Heatmap colors 
 
 Copy this message into your coding agent:
 
-> Clone https://github.com/ottobonilla95/rocket-land.git into a new local directory, enter it, and read AGENTS.md and README.md. Use uv sync --locked, then run uv run python -m unittest discover -s tests -v. If uv is missing, follow its official installation instructions. On a graphical desktop, launch uv run main.py --demo so I can watch the fixed-rule lander. If no display is available, run uv run policy.py instead and explain that the rocket window requires a desktop. Do not start a training run yet. Tell me where the project is and the commands to run it myself.
+> Clone https://github.com/ottobonilla95/lunar-landing-rl.git into a new local directory, enter it, and read AGENTS.md and README.md. Use uv sync --locked, then run uv run python -m unittest discover -s tests -v. If uv is missing, follow its official installation instructions. On a graphical desktop, launch uv run main.py --demo so I can watch the fixed-rule lander. If no display is available, run uv run policy.py instead and explain that the rocket window requires a desktop. Do not start a training run yet. Tell me where the project is and the commands to run it myself.
 
 When you want the agent to train:
 
-> In rocket-land, read AGENTS.md and README.md. Train a fresh policy for 5,000 episodes with batch size 8, learning rate 0.003, and gamma 0.99. Keep the architecture from config.py and report it. Choose a new unused output filename under models/ so existing results are preserved. Record the effective config, exact command, console output, CSV, chart, and initial/final greedy evaluation scores. Use --no-open-plot without a desktop. After training, tell me the path and the matching uv run main.py --nn --model PATH --greedy command. Do not claim the training reward is a separate evaluation score.
+> In lunar-landing-rl, read AGENTS.md and README.md. Train a fresh policy for 5,000 episodes with batch size 8, learning rate 0.003, and gamma 0.99. Keep the architecture from config.py and report it. Choose a new unused output filename under models/ so existing results are preserved. Record the effective config, exact command, console output, CSV, chart, and initial/final greedy evaluation scores. Use --no-open-plot without a desktop. After training, tell me the path and the matching uv run main.py --nn --model PATH --greedy command. Do not claim the training reward is a separate evaluation score.
 
 ## Check the implementation
 

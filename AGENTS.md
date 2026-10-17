@@ -1,4 +1,4 @@
-# Working on Rocket Land
+# Working on Lunar Landing RL
 
 This is an educational Python project using Gymnasium LunarLander-v3 and a PyTorch REINFORCE policy. Preserve the readable, commented learning flow.
 
