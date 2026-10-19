@@ -1,6 +1,6 @@
 # Experiment records
 
-The published charts are preserved as supplied. Both have 5,000 episodes, with learning rates 0.001 and 0.002 respectively. Other settings are unrecorded and stored as JSON null. There are no corresponding raw CSVs or checkpoints in this repository.
+The published charts are preserved as supplied. All three have 5,000 episodes, with learning rates 0.001, 0.002, and 0.003 respectively. Other settings are unrecorded and stored as JSON null. There are no corresponding raw CSVs or checkpoints in this repository.
 
 For each new experiment:
 
