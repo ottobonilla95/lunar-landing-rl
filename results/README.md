@@ -1,6 +1,6 @@
 # Experiment records
 
-The published charts are preserved as supplied. All six have 5,000 episodes, with learning rates 0.001, 0.002, 0.003, 0.004, 0.005, and 0.009 respectively. Other settings are unrecorded and stored as JSON null. There are no corresponding raw CSVs or checkpoints in this repository.
+The published charts are preserved as supplied. All seven have 5,000 episodes. The first six use learning rates 0.001, 0.002, 0.003, 0.004, 0.005, and 0.009, with gamma unrecorded. The seventh uses learning rate 0.001 and gamma 0.79. Other settings are unrecorded and stored as JSON null. There are no corresponding raw CSVs or checkpoints in this repository.
 
 For each new experiment:
 

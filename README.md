@@ -115,14 +115,15 @@ To collect sequentially, use `--workers 1`. Parallel workers collect complete ep
 
 ## Recorded results
 
-| Run | Episodes | Learning rate | Evidence |
-| --- | ---: | ---: | --- |
-| LR 0.001 | 5,000 | 0.001 | [Chart](results/5000-episodes-lr-0.001.png) · [Metadata](results/5000-episodes-lr-0.001.json) |
-| LR 0.002 | 5,000 | 0.002 | [Chart](results/5000-episodes-lr-0.002.png) · [Metadata](results/5000-episodes-lr-0.002.json) |
-| LR 0.003 | 5,000 | 0.003 | [Chart](results/5000-episodes-lr-0.003.png) · [Metadata](results/5000-episodes-lr-0.003.json) |
-| LR 0.004 | 5,000 | 0.004 | [Chart](results/5000-episodes-lr-0.004.png) · [Metadata](results/5000-episodes-lr-0.004.json) |
-| LR 0.005 | 5,000 | 0.005 | [Chart](results/5000-episodes-lr-0.005.png) · [Metadata](results/5000-episodes-lr-0.005.json) |
-| LR 0.009 | 5,000 | 0.009 | [Chart](results/5000-episodes-lr-0.009.png) · [Metadata](results/5000-episodes-lr-0.009.json) |
+| Run | Episodes | Learning rate | Gamma | Evidence |
+| --- | ---: | ---: | ---: | --- |
+| LR 0.001 | 5,000 | 0.001 | Unrecorded | [Chart](results/5000-episodes-lr-0.001.png) · [Metadata](results/5000-episodes-lr-0.001.json) |
+| LR 0.002 | 5,000 | 0.002 | Unrecorded | [Chart](results/5000-episodes-lr-0.002.png) · [Metadata](results/5000-episodes-lr-0.002.json) |
+| LR 0.003 | 5,000 | 0.003 | Unrecorded | [Chart](results/5000-episodes-lr-0.003.png) · [Metadata](results/5000-episodes-lr-0.003.json) |
+| LR 0.004 | 5,000 | 0.004 | Unrecorded | [Chart](results/5000-episodes-lr-0.004.png) · [Metadata](results/5000-episodes-lr-0.004.json) |
+| LR 0.005 | 5,000 | 0.005 | Unrecorded | [Chart](results/5000-episodes-lr-0.005.png) · [Metadata](results/5000-episodes-lr-0.005.json) |
+| LR 0.009 | 5,000 | 0.009 | Unrecorded | [Chart](results/5000-episodes-lr-0.009.png) · [Metadata](results/5000-episodes-lr-0.009.json) |
+| LR 0.001, gamma 0.79 | 5,000 | 0.001 | 0.79 | [Chart](results/5000-episodes-lr-0.001-gamma-0.79.png) · [Metadata](results/5000-episodes-lr-0.001-gamma-0.79.json) |
 
 ### 5,000 episodes · learning rate 0.001
 
@@ -140,7 +141,7 @@ The smoothed training reward reaches roughly **100** around episode **1,400**, f
 
 ![Training loss and sampled training reward over 5,000 Lunar Lander episodes at learning rate 0.003](results/5000-episodes-lr-0.003.png)
 
-The smoothed training reward reaches roughly **200** around episode **1,400** and ends around **240–250**, with substantial drops and recoveries in between. This run finishes with the highest final smoothed training reward of the six published charts. These are approximate readings from the image; one run per learning rate does not establish a reliable ranking.
+The smoothed training reward reaches roughly **200** around episode **1,400** and ends around **240–250**, with substantial drops and recoveries in between. This run finishes with the highest final smoothed training reward of the seven published charts. These are approximate readings from the image; these individual runs do not establish a reliable ranking of settings.
 
 ### 5,000 episodes · learning rate 0.004
 
@@ -160,9 +161,15 @@ The smoothed training reward rises from roughly **−200**, reaches peaks around
 
 The smoothed training reward reaches roughly **250** before episode **2,000**, then deteriorates sharply and ends around **−1,000**. After roughly episode **2,500**, the loss stays close to zero while rewards remain strongly negative: near-zero policy-gradient loss does not indicate successful learning. These are approximate observations from the image, not exact CSV statistics or a diagnosis of the underlying cause.
 
+### 5,000 episodes · learning rate 0.001 · gamma 0.79
+
+![Training loss and sampled training reward over 5,000 Lunar Lander episodes at learning rate 0.001 and gamma 0.79](results/5000-episodes-lr-0.001-gamma-0.79.png)
+
+The smoothed training reward starts around **−200**, approaches zero later in the run, and ends slightly positive with continued fluctuations. It finishes below the earlier 0.001 run, whose gamma was not recorded. These are approximate observations from the image; the charts alone do not isolate gamma's effect or provide a separate evaluation score.
+
 The bottom panel is the mean episode reward in each collection batch; the bold line averages up to ten updates. The top panel is policy-gradient loss. This loss can be positive or negative and does not need to decrease across batches or reach zero. Reward trends and separate evaluation scores are more useful for judging landing behavior.
 
-**Recorded settings:** all six runs have 5,000 episodes, with learning rates 0.001, 0.002, 0.003, 0.004, 0.005, and 0.009 respectively. Architecture, batch size, gamma, seed, worker count, raw CSV, checkpoint, and evaluation scores were not supplied with these results. They are marked unknown in each run's metadata. The current defaults do not establish the historical settings. The example training command above starts a new experiment; it does not guarantee reproduction of these charts.
+**Recorded settings:** all seven runs have 5,000 episodes. The first six use learning rates 0.001, 0.002, 0.003, 0.004, 0.005, and 0.009; their gamma values were not recorded. The seventh uses learning rate 0.001 and gamma 0.79. Architecture, batch size, seed, worker count, raw CSV, checkpoint, and evaluation scores were not supplied with these results. They are marked unknown in each run's metadata. The current defaults do not establish the historical settings. The example training command above starts a new experiment; it does not guarantee reproduction of these charts.
 
 These charts record training performance. They do not establish a held-out success rate or prove that the environment is solved.
 
