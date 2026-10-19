@@ -2,6 +2,19 @@
 
 [Back to the project](../README.md) · All seven published runs and their supplied charts are preserved below.
 
+## Conclusions
+
+**Learning rate 0.003 with gamma 0.99 has the strongest finish in these seven runs:** its smoothed training reward ends around **240–250**. It also suffers substantial dips, so this is a promising setting to repeat, rather than an established winner.
+
+- **0.001 improves more gradually.** With gamma 0.99, it ends around **130–140** and has fewer dramatic reversals after reaching positive rewards. **0.002** reaches positive rewards earlier but fluctuates and finishes around **110–120**. Learning faster initially does not guarantee a better finish.
+- **Increasing the learning rate does not consistently improve results.** **0.004** repeatedly reaches **200–250**, but suffers a deep collapse, recovers, then ends below zero. **0.005** also loses progress and recovers, finishing around **130–140**. **0.009** initially reaches roughly **250**, then collapses persistently and finishes near **−1,000**. These curves show instability in those runs; they do not establish its exact cause.
+- **Gamma 0.79 performs worse in the supplied comparison.** At learning rate 0.001, it finishes around zero or slightly positive, versus **130–140** with gamma 0.99. This is consistent with discounting distant rewards too strongly for the landing task, although unrecorded settings prevent isolating gamma as the cause.
+- **A good peak can disappear, and near-zero loss can accompany failure.** The 0.004 and 0.009 runs lose earlier performance; the latter's loss stays near zero during poor performance. Judge progress using rewards and separate evaluations. More training alone does not guarantee a better final policy.
+
+These are approximate readings of individual training charts. Historical architecture, batch size, seeds, and evaluation scores are unavailable, so the charts cannot establish a statistical ranking, landing success rate, or performance on new starts.
+
+A useful next experiment would repeat **0.003 / gamma 0.99** across several seeds with all other settings fixed, then evaluate the saved policies on fresh starts. Periodic evaluation and saving the best evaluated checkpoint could also preserve earlier progress; the current trainer saves the final network.
+
 ## Recorded results
 
 | Run | Episodes | Learning rate | Gamma | Evidence |
@@ -58,7 +71,7 @@ The smoothed training reward starts around **−200**, approaches zero later in 
 
 The bottom panel is the mean episode reward in each collection batch; the bold line averages up to ten updates. The top panel is policy-gradient loss. This loss can be positive or negative and does not need to decrease across batches or reach zero. Reward trends and separate evaluation scores are more useful for judging landing behavior.
 
-**Recorded settings:** all seven runs have 5,000 episodes. The first six use learning rates 0.001, 0.002, 0.003, 0.004, 0.005, and 0.009; all six use gamma 0.99, as confirmed by the user. The seventh uses learning rate 0.001 and gamma 0.79. Architecture, batch size, seed, worker count, raw CSV, checkpoint, and evaluation scores were not supplied with these results. They are marked unknown in each run's metadata. The current defaults do not establish the historical settings. The example training command above starts a new experiment; it does not guarantee reproduction of these charts.
+**Recorded settings:** all seven runs have 5,000 episodes. The first six use learning rates 0.001, 0.002, 0.003, 0.004, 0.005, and 0.009; all six use gamma 0.99, as confirmed by the user. The seventh uses learning rate 0.001 and gamma 0.79. Architecture, batch size, seed, worker count, raw CSV, checkpoint, and evaluation scores were not supplied with these results. They are marked unknown in each run's metadata. The current defaults do not establish the historical settings. The [example training command in the project README](../README.md#train-then-watch) starts a new experiment; it does not guarantee reproduction of these charts.
 
 These charts record training performance. They do not establish a held-out success rate or prove that the environment is solved.
 
