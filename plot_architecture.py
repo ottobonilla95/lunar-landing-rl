@@ -125,7 +125,10 @@ def plot_architecture(policy, output):
               fontsize=11, color=colors["muted"])
     output.parent.mkdir(parents=True, exist_ok=True)
     figure.savefig(output, dpi=140, facecolor=figure.get_facecolor())
-    figure.savefig(output.with_suffix(".svg"), facecolor=figure.get_facecolor())
+    svg_path = output.with_suffix(".svg")
+    figure.savefig(svg_path, facecolor=figure.get_facecolor())
+    # Matplotlib includes trailing spaces in SVG paths; keep generated diffs clean.
+    svg_path.write_text("\n".join(line.rstrip() for line in svg_path.read_text().splitlines()) + "\n")
     plt.close(figure)
     return parameter_count
 
