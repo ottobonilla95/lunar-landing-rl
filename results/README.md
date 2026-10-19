@@ -1,6 +1,6 @@
 # Experiment records
 
-The first chart is preserved as supplied. Only its 5,000 episodes and learning rate 0.003 are confirmed; unknown metadata is stored as JSON null. There is no corresponding raw CSV or checkpoint in this repository.
+The published chart is preserved as supplied. Only its 5,000 episodes and learning rate 0.001 are confirmed; unknown metadata is stored as JSON null. There is no corresponding raw CSV or checkpoint in this repository.
 
 For each new experiment:
 

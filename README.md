@@ -113,19 +113,19 @@ uv run train.py --episodes 5000 --batch-size 8 --workers 4 --learning-rate 0.003
 
 To collect sequentially, use `--workers 1`. Parallel workers collect complete episodes with unchanged copies of the current policy. The parent waits for the batch and updates the network once. Worker count does not change the batch size or number of updates; it is capped by the batch size and episode count. The current implementation uses per-episode random seeds and preserves episode order across worker counts. This differs from older versions that used one shared random sequence.
 
-## First recorded result
+## Recorded result
 
 | Run | Episodes | Learning rate | Evidence |
 | --- | ---: | ---: | --- |
-| First shared experiment | 5,000 | 0.003 | User-supplied chart below |
+| Shared experiment | 5,000 | 0.001 | User-supplied chart below |
 
-![Training loss and sampled training reward over 5,000 Lunar Lander episodes](results/5000-episodes-lr-0.003.png)
+![Training loss and sampled training reward over 5,000 Lunar Lander episodes](results/5000-episodes-lr-0.001.png)
 
-The smoothed training reward rises from roughly **−200** to roughly **240–250** near the end. There are substantial drops and recoveries along the way. These are approximate observations from the image, not exact statistics extracted from a CSV.
+The smoothed training reward rises from roughly **−200** to roughly **130–140** near the end. Improvement slows in the latter part of the run. These are approximate observations from the image, not exact statistics extracted from a CSV.
 
 The bottom panel is the mean episode reward in each collection batch; the bold line averages up to ten updates. The top panel is policy-gradient loss. This loss can be positive or negative and does not need to decrease across batches or reach zero. Reward trends and separate evaluation scores are more useful for judging landing behavior.
 
-**Recorded settings:** 5,000 episodes and learning rate 0.003. Architecture, batch size, gamma, seed, worker count, raw CSV, checkpoint, and evaluation scores were not supplied with this result. They are marked unknown in its [metadata](results/5000-episodes-lr-0.003.json). The current defaults do not establish the historical settings. The example training command above starts a new experiment; it does not guarantee reproduction of this chart.
+**Recorded settings:** 5,000 episodes and learning rate 0.001. Architecture, batch size, gamma, seed, worker count, raw CSV, checkpoint, and evaluation scores were not supplied with this result. They are marked unknown in its [metadata](results/5000-episodes-lr-0.001.json). The current defaults do not establish the historical settings. The example training command above starts a new experiment; it does not guarantee reproduction of this chart.
 
 This chart records training performance. It does not establish a held-out success rate or prove that the environment is solved.
 
