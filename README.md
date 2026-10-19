@@ -2,61 +2,41 @@
 
 Learn reinforcement learning by teaching a neural network to land a rocket in [Gymnasium's Lunar Lander](https://gymnasium.farama.org/environments/box2d/lunar_lander/).
 
-Gymnasium provides the physics, observations, actions, and rewards. This project adds keyboard controls, a PyTorch policy network, an explained **REINFORCE** training loop, parallel episode collection, and charts. You can start by watching the environment without training anything.
+Gymnasium supplies the simulation and rewards. This project adds keyboard controls, a PyTorch neural network, an explained **REINFORCE** trainer, parallel episode collection, and charts. Start with a demo; train when you are ready.
 
 ## Get started
 
-Choose **[a coding agent](#option-1-use-a-coding-agent-recommended)** to set up the project and explain how to use it, or follow the **[manual setup](#option-2-set-it-up-manually)** commands yourself.
+Choose **[a coding agent](#option-1-use-a-coding-agent-recommended)** for guided setup, or **[set it up manually](#option-2-set-it-up-manually)**.
 
 ### Option 1: Use a coding agent (recommended)
 
-Copy the text below and paste it into your coding agent. It will read the project, set it up, open the demo where possible, and give you a beginner-friendly summary of how to use it.
+Copy this into your coding agent:
 
 ```text
-Help me get started with this educational Lunar Lander reinforcement-learning project:
+Help me set up and understand this educational reinforcement-learning project:
 https://github.com/ottobonilla95/lunar-landing-rl
 
-1. Check my operating system and whether Git and uv are available. If either is
-   missing, use the official installation instructions for my platform:
-   https://git-scm.com/downloads
-   https://docs.astral.sh/uv/getting-started/installation/
+Check my OS, Git, and uv; use their official installation instructions if needed:
+https://git-scm.com/downloads
+https://docs.astral.sh/uv/getting-started/installation/
+Clone into a new folder, or reuse my existing checkout while preserving changes.
+Read AGENTS.md, README.md, docs/learning-guide.md, and the relevant Python files.
 
-2. Clone the repository into a new local directory and enter it. If I already
-   have this repository checked out, use that checkout and preserve my changes.
+Run uv sync --locked, then uv run python -m unittest discover -s tests -v.
+On a graphical desktop, launch uv run main.py --demo. Without a display, run
+uv run policy.py and explain how to open the rocket window on a desktop.
 
-3. Read AGENTS.md, README.md, docs/learning-guide.md, and the relevant Python
-   files (config.py, policy.py, main.py, train.py, and rollouts.py). Understand
-   what Gymnasium provides and what this project implements before explaining it.
-
-4. Run uv sync --locked, then:
-   uv run python -m unittest discover -s tests -v
-   Report whether setup and tests succeeded, and explain any blocker clearly.
-
-5. If a graphical desktop is available, launch uv run main.py --demo so I can
-   watch the fixed-rule lander. If no display is available, run uv run policy.py
-   instead and explain how I can open the rocket window on a desktop.
-
-6. Give me a short, beginner-friendly guide covering:
-   - What the project does and where you put it on my computer.
-   - The difference between manual control, the fixed-rule demo, an untrained
-     neural network, and a trained neural network.
-   - The current network's inputs, hidden layers, activations, and outputs,
-     reading the actual settings from config.py.
-   - The commands to fly manually, watch the demo, train a fresh network, and
-     watch that saved network. Use a new model filename and the same path in
-     the training and viewing commands.
-   - The keys for restarting and quitting, where models/CSV/charts are saved,
-     and which settings I can change in config.py.
-   - How training reward differs from the separate greedy evaluation score.
-
-Do not start training until I ask. Preserve existing models and experiment
-outputs. Finish by showing the exact commands I can run next from the project
-folder, so I can continue learning myself.
+Give me a beginner-friendly summary: what the project does, its local folder,
+the current network and settings from config.py, manual/demo/untrained/trained
+modes, controls, and where model/CSV/chart files go. Show the exact commands to
+run, train, and watch a saved network, using the same new model path for both.
+Explain training reward versus greedy evaluation. Report any setup/test failures.
+Do not start training until I ask, and preserve existing models and results.
 ```
 
 ### Option 2: Set it up manually
 
-Install [Git](https://git-scm.com/downloads) and [uv](https://docs.astral.sh/uv/getting-started/installation/), then run:
+Install [Git](https://git-scm.com/downloads) and [uv](https://docs.astral.sh/uv/getting-started/installation/), then:
 
 ```sh
 git clone https://github.com/ottobonilla95/lunar-landing-rl.git
@@ -65,253 +45,65 @@ uv sync --locked
 uv run main.py --demo
 ```
 
-`uv` manages Python and the project's local `.venv`; dependencies are recorded in `pyproject.toml` and pinned in `uv.lock`. The project selects Python 3.13 in `.python-version` and supports Python 3.11–3.13. You do not need to clone the Gymnasium repository.
+`uv` manages Python and dependencies in a local `.venv`; the project selects Python 3.13. The demo opens a fixed-rule controller with no training. A graphical desktop is required; without one, try `uv run policy.py`.
 
-The command opens a desktop window with Gymnasium's fixed-rule controller. It uses no neural network or training. Press **R** for another attempt and **Esc** to quit. The final scene stays visible until you restart.
-
-A graphical desktop is required for the rocket window. Training and image generation can run without a display.
-
-#### Try the other controllers
-
-```sh
-# Fly it yourself.
-uv run main.py
-
-# Watch a fresh, untrained neural network.
-uv run main.py --nn
-
-# Print one observation and the network's action probabilities; no window.
-uv run policy.py
-```
-
-| Key | Manual action |
+| Mode | Command |
 | --- | --- |
-| Up arrow | Main engine |
-| Left / Right arrow | Corresponding side engine |
-| No arrow | Engines off |
-| R | Restart the environment |
-| Esc | Quit |
+| Fly manually | `uv run main.py` |
+| Watch the fixed-rule controller | `uv run main.py --demo` |
+| Watch an untrained network | `uv run main.py --nn` |
 
-Click the window to focus it. There is one discrete action per step; the main engine takes priority when multiple keys are held. None of these commands trains a network.
-
-If you prefer `python main.py`, activate the environment after `uv sync --locked`:
-
-```sh
-# macOS / Linux
-source .venv/bin/activate
-python main.py --demo
-```
-
-On Windows PowerShell, activate with `.venv\Scripts\Activate.ps1` instead. The scripts are ordinary Python; `uv run` selects the correct environment for you.
+Click the window to focus it. **Up** fires the main engine; **Left/Right** fire side engines. **R** restarts; **Esc** quits. These modes do not train the network.
 
 ## Our neural network
 
-![Lunar Lander policy: 8 state inputs, two hidden layers of 128 neurons with ReLU, 4 action scores, and Softmax action probabilities](docs/images/policy-architecture.png)
+![Policy architecture: 8 inputs, two hidden layers of 128 neurons with ReLU, four action scores, and Softmax probabilities](docs/images/policy-architecture.png)
 
-The configured policy uses **8 → 128 → 128 → 4**, with **ReLU** after each hidden layer and **Softmax** converting the four action scores into probabilities. It has **18,180 trainable parameters**, including weights and biases. Circles abbreviate the hidden layers; each linear layer is fully connected.
+**8 → 128 → 128 → 4**, with **ReLU** hidden activations, **Softmax** action probabilities, and **18,180 trainable weights and biases**. Hidden circles are abbreviated; linear layers are fully connected. Saved checkpoints retain their own architecture. [Vector diagram](docs/images/policy-architecture.svg).
 
-[Download the vector diagram (SVG)](docs/images/policy-architecture.svg). The diagram reflects the current architecture in `config.py`; saved models can have different architectures. Regenerate it with:
+## Train, then watch
 
-```sh
-uv run plot_architecture.py --output docs/images/policy-architecture.png
-```
-
-## Train, then watch the saved network
-
-First check that the full training flow works with a small run:
+A short check that training runs:
 
 ```sh
 uv run train.py --episodes 32 --output models/smoke.pt --no-open-plot
 ```
 
-This is an installation check, not enough training to learn a reliable landing. For a longer experiment:
+For a longer experiment, train and then load that exact model:
 
 ```sh
-uv run train.py --episodes 5000 --batch-size 8 --learning-rate 0.003 --gamma 0.99 --output models/ep5000-lr0003.pt
-uv run main.py --nn --model models/ep5000-lr0003.pt --greedy
+uv run train.py --episodes 5000 --batch-size 8 --learning-rate 0.003 --gamma 0.99 --output models/experiment.pt
+uv run main.py --nn --model models/experiment.pt --greedy
 ```
 
-Use the **same model path** in both commands. Training saves the final model; it does not automatically select the best earlier update. Each invocation starts a fresh network. Reusing an output path replaces that run's model, CSV, and chart. Choose a new filename for each experiment.
+Each training command starts a **fresh network**. Use a new output name each time: this example writes `models/experiment.pt` (weights and architecture), `.csv` (progress), and `.png` (loss/reward curves). Training saves the final policy, not the best earlier one. Trained models are not included in the repo.
 
-| File from the example | Contents |
-| --- | --- |
-| `models/ep5000-lr0003.pt` | Weights, hidden layer sizes, and activation |
-| `models/ep5000-lr0003.csv` | One row per update: completed episodes, batch mean score, loss |
-| `models/ep5000-lr0003.png` | Loss and training reward curves |
+The chart opens after training and final evaluation; `--no-open-plot` saves it without opening. `--greedy` picks the most likely action; omit it to sample actions.
 
-After training and final evaluation, the chart opens in your image viewer. Pass `--no-open-plot` on a server or when you only want saved files. Ctrl+C during collection discards the unfinished batch and saves the last completed update.
-
-`--greedy` chooses the most likely action. Omit it to sample actions as training does. Running `main.py` with saved weights performs inference only. Trained checkpoints are not included in this repository; `models/` and generated `visualizations/` stay local.
-
-### Change the experiment
-
-Edit **[config.py](config.py)** to keep settings in one place. These are the current defaults, which may differ from earlier experiments:
-
-| Setting | Current value | Meaning |
-| --- | --- | --- |
-| `HIDDEN_SIZES` | `(128, 128)` | Two hidden layers, 128 neurons each |
-| `ACTIVATION` | `"relu"` | Hidden activation; `"tanh"` is also supported |
-| `EPISODES` | `7000` | Complete landing attempts |
-| `BATCH_SIZE` | `8` | Attempts collected before one update |
-| `PARALLEL_WORKERS` | `8` | CPU processes collecting episodes |
-| `LEARNING_RATE` | `0.004` | Adam's learning rate |
-| `GAMMA` | `0.99` | Discount applied per future step |
-| `SEED` | `42` | Initial weights, training starts, and sampled actions |
-| `TORCH_THREADS` | `1` | PyTorch CPU threads per process |
-| `MAX_GRAD_NORM` | `1.0` | Gradient clipping limit |
-| `EVALUATION_EPISODES` | `10` | Greedy test attempts before and after training |
-| `EVALUATION_SEED` | `10000` | Starting seed for the fixed evaluation set |
-| `OUTPUT` | `models/policy.pt` | Default output path |
-| `AUTO_OPEN_PLOT` | `True` | Open the chart after training |
-
-For example, `(64, 64)`, `(32, 32)`, or `(64,)` select other architectures. Saved models remember their own architecture even if you later change the config. Chart smoothing and visualization output paths are also configured there.
-
-Command-line options override matching defaults for a single run:
-
-```sh
-uv run train.py --help
-uv run train.py --episodes 5000 --batch-size 8 --workers 4 --learning-rate 0.003 --gamma 0.99 --seed 43 --output models/seed43.pt
-```
-
-To collect sequentially, use `--workers 1`. Parallel workers collect complete episodes with unchanged copies of the current policy. The parent waits for the batch and updates the network once. Worker count does not change the batch size or number of updates; it is capped by the batch size and episode count. The current implementation uses per-episode random seeds and preserves episode order across worker counts. This differs from older versions that used one shared random sequence.
+Edit **[config.py](config.py)** for hidden layers, activation, episodes, batch size, learning rate, gamma, workers, and seed. CLI options override matching settings for one run; see `uv run train.py --help`. Without `--output`, training saves to the configured path, currently `models/policy.pt`. Parallel workers collect complete episodes, followed by one update per batch; `--workers 1` runs sequentially.
 
 ## Recorded results
 
-| Run | Episodes | Learning rate | Gamma | Evidence |
-| --- | ---: | ---: | ---: | --- |
-| LR 0.001 | 5,000 | 0.001 | 0.99 | [Chart](results/5000-episodes-lr-0.001.png) · [Metadata](results/5000-episodes-lr-0.001.json) |
-| LR 0.002 | 5,000 | 0.002 | 0.99 | [Chart](results/5000-episodes-lr-0.002.png) · [Metadata](results/5000-episodes-lr-0.002.json) |
-| LR 0.003 | 5,000 | 0.003 | 0.99 | [Chart](results/5000-episodes-lr-0.003.png) · [Metadata](results/5000-episodes-lr-0.003.json) |
-| LR 0.004 | 5,000 | 0.004 | 0.99 | [Chart](results/5000-episodes-lr-0.004.png) · [Metadata](results/5000-episodes-lr-0.004.json) |
-| LR 0.005 | 5,000 | 0.005 | 0.99 | [Chart](results/5000-episodes-lr-0.005.png) · [Metadata](results/5000-episodes-lr-0.005.json) |
-| LR 0.009 | 5,000 | 0.009 | 0.99 | [Chart](results/5000-episodes-lr-0.009.png) · [Metadata](results/5000-episodes-lr-0.009.json) |
-| LR 0.001, gamma 0.79 | 5,000 | 0.001 | 0.79 | [Chart](results/5000-episodes-lr-0.001-gamma-0.79.png) · [Metadata](results/5000-episodes-lr-0.001-gamma-0.79.json) |
+All runs below used **5,000 episodes**. Open a chart, or browse the **[full experiment gallery and notes](results/README.md)**.
 
-### 5,000 episodes · learning rate 0.001 · gamma 0.99
+| Learning rate | Gamma | Chart and settings |
+| ---: | ---: | --- |
+| 0.001 | 0.99 | [Chart](results/5000-episodes-lr-0.001.png) · [Metadata](results/5000-episodes-lr-0.001.json) |
+| 0.002 | 0.99 | [Chart](results/5000-episodes-lr-0.002.png) · [Metadata](results/5000-episodes-lr-0.002.json) |
+| 0.003 | 0.99 | [Chart](results/5000-episodes-lr-0.003.png) · [Metadata](results/5000-episodes-lr-0.003.json) |
+| 0.004 | 0.99 | [Chart](results/5000-episodes-lr-0.004.png) · [Metadata](results/5000-episodes-lr-0.004.json) |
+| 0.005 | 0.99 | [Chart](results/5000-episodes-lr-0.005.png) · [Metadata](results/5000-episodes-lr-0.005.json) |
+| 0.009 | 0.99 | [Chart](results/5000-episodes-lr-0.009.png) · [Metadata](results/5000-episodes-lr-0.009.json) |
+| 0.001 | 0.79 | [Chart](results/5000-episodes-lr-0.001-gamma-0.79.png) · [Metadata](results/5000-episodes-lr-0.001-gamma-0.79.json) |
 
-![Training loss and sampled training reward over 5,000 Lunar Lander episodes at learning rate 0.001](results/5000-episodes-lr-0.001.png)
+The **0.003 / 0.99** run finished with the highest smoothed training reward among these charts. These are individual exploratory runs; architecture, batch size, seed, and separate evaluation scores were not recorded with the images. They do not establish a reliable ranking or success rate. Policy-gradient loss need not decrease toward zero; judge learning with rewards and separate evaluation.
 
-The smoothed training reward rises from roughly **−200** to roughly **130–140** near the end. Improvement slows in the latter part of the run.
+## Explore further
 
-### 5,000 episodes · learning rate 0.002 · gamma 0.99
+- **[Learning guide](docs/learning-guide.md):** how the network, discounted returns, loss, and optimizer work, function by function.
+- **[Commands and project reference](docs/usage.md):** settings, file map, Python activation, heatmaps, architecture diagrams, Netron, and an agent training prompt.
+- **[Experiment gallery](results/README.md):** all seven charts, observations, metadata, and a template for recording more runs.
 
-![Training loss and sampled training reward over 5,000 Lunar Lander episodes at learning rate 0.002](results/5000-episodes-lr-0.002.png)
+Run the implementation checks with `uv run python -m unittest discover -s tests -v`.
 
-The smoothed training reward reaches roughly **100** around episode **1,400**, fluctuates mostly around **100–190** afterward, and ends around **110–120**. It reaches positive rewards earlier than the 0.001 run but finishes with a lower smoothed reward. These are approximate observations from the supplied images, not exact statistics extracted from CSVs, and do not establish which learning rate is better across repeated runs.
-
-### 5,000 episodes · learning rate 0.003 · gamma 0.99
-
-![Training loss and sampled training reward over 5,000 Lunar Lander episodes at learning rate 0.003](results/5000-episodes-lr-0.003.png)
-
-The smoothed training reward reaches roughly **200** around episode **1,400** and ends around **240–250**, with substantial drops and recoveries in between. This run finishes with the highest final smoothed training reward of the seven published charts. These are approximate readings from the image; these individual runs do not establish a reliable ranking of settings.
-
-### 5,000 episodes · learning rate 0.004 · gamma 0.99
-
-![Training loss and sampled training reward over 5,000 Lunar Lander episodes at learning rate 0.004](results/5000-episodes-lr-0.004.png)
-
-The smoothed training reward repeatedly reaches roughly **200–250**, but drops to roughly **−350** around episode **3,450**. It recovers, then ends **below zero** after another late drop. This run shows that strong intermediate rewards can be lost before training finishes. These are approximate observations from the image, not exact CSV statistics or a separate evaluation of the final model.
-
-### 5,000 episodes · learning rate 0.005 · gamma 0.99
-
-![Training loss and sampled training reward over 5,000 Lunar Lander episodes at learning rate 0.005](results/5000-episodes-lr-0.005.png)
-
-The smoothed training reward rises from roughly **−200**, reaches peaks around **180–190**, and drops to roughly **−110** near episode **3,200** before recovering. It ends around **130–140**, below its earlier peaks. These are approximate readings from the image, not exact CSV statistics or a separate evaluation of the final model.
-
-### 5,000 episodes · learning rate 0.009 · gamma 0.99
-
-![Training loss and sampled training reward over 5,000 Lunar Lander episodes at learning rate 0.009](results/5000-episodes-lr-0.009.png)
-
-The smoothed training reward reaches roughly **250** before episode **2,000**, then deteriorates sharply and ends around **−1,000**. After roughly episode **2,500**, the loss stays close to zero while rewards remain strongly negative: near-zero policy-gradient loss does not indicate successful learning. These are approximate observations from the image, not exact CSV statistics or a diagnosis of the underlying cause.
-
-### 5,000 episodes · learning rate 0.001 · gamma 0.79
-
-![Training loss and sampled training reward over 5,000 Lunar Lander episodes at learning rate 0.001 and gamma 0.79](results/5000-episodes-lr-0.001-gamma-0.79.png)
-
-The smoothed training reward starts around **−200**, approaches zero later in the run, and ends slightly positive with continued fluctuations. It finishes below the earlier 0.001 run with gamma 0.99. These are approximate observations from the image; the charts alone do not isolate gamma's effect or provide a separate evaluation score.
-
-The bottom panel is the mean episode reward in each collection batch; the bold line averages up to ten updates. The top panel is policy-gradient loss. This loss can be positive or negative and does not need to decrease across batches or reach zero. Reward trends and separate evaluation scores are more useful for judging landing behavior.
-
-**Recorded settings:** all seven runs have 5,000 episodes. The first six use learning rates 0.001, 0.002, 0.003, 0.004, 0.005, and 0.009; all six use gamma 0.99, as confirmed by the user. The seventh uses learning rate 0.001 and gamma 0.79. Architecture, batch size, seed, worker count, raw CSV, checkpoint, and evaluation scores were not supplied with these results. They are marked unknown in each run's metadata. The current defaults do not establish the historical settings. The example training command above starts a new experiment; it does not guarantee reproduction of these charts.
-
-These charts record training performance. They do not establish a held-out success rate or prove that the environment is solved.
-
-### Early tuning observations
-
-In the experiments reported during development, batch size **8** gave the highest training reward among **1, 8, 16, and 32**; batch size 1 was particularly noisy. Learning rates **0.003** and **0.004** showed promising reward curves. These are exploratory observations, not a controlled comparison across multiple seeds.
-
-For future results, save a unique output, keep a copy of the config and exact command, and record initial/final evaluation scores. Repeat promising setups with several seeds. Add a chart and metadata using the [result template](results/README.md).
-
-## How the files connect
-
-```text
-config.py → policy.py → train.py → models/<run>.pt → main.py --nn --model ...
-                           ↑
-                       rollouts.py
-                           ↓
-                  CSV → plot_training.py → PNG
-
-saved model → plot_weights.py → weight heatmaps
-saved model → export_model.py → Netron diagram
-```
-
-| File | Responsibility |
-| --- | --- |
-| `config.py` | Experiment settings and the environment interface |
-| `policy.py` | Network definition, sampling example, checkpoint saving/loading |
-| `main.py` | Interactive manual, fixed-rule, or neural network controller |
-| `rollouts.py` | Collect complete episodes sequentially or in reusable processes |
-| `train.py` | Reward-to-go, policy update, evaluation, and training loop |
-| `plot_training.py` | Plot recorded loss and training reward |
-| `plot_architecture.py` | Draw layers, neuron counts, activations, and parameter counts |
-| `plot_weights.py` | Plot each linear layer's connection weights |
-| `export_model.py` | Export the computation graph for Netron |
-| `tests/test_training.py` | Learning math, checkpoints, and collection checks |
-
-An observation contains eight values. The network returns four action probabilities: engines off, left side engine, main engine, or right side engine. Training samples an action, gets the next observation and reward, and records the transition until the episode ends. After a batch, the network learns from discounted future rewards:
-
-```text
-G[t] = reward[t] + gamma × G[t + 1]
-weights = (returns − mean(returns)) / (std(returns) + epsilon)
-loss = −mean(log(probability of each action taken) × weights)
-```
-
-Returns are calculated backward within each episode. Above-average returns encourage the recorded actions; below-average returns discourage them. Adam uses the loss gradients to adjust shared weights and biases. There is no supervised list of correct actions, no value network, and no replay buffer in this introductory implementation.
-
-For the detailed explanation of tensors, sampling, discounted returns, loss, Adam, and each training function, read the **[learning guide](docs/learning-guide.md)** alongside the commented Python files.
-
-## Inspect a trained model
-
-Use the path of a model you have actually trained:
-
-```sh
-# Regenerate a training chart from its CSV.
-uv run plot_training.py models/ep5000-lr0003.csv
-
-# Create PNG and SVG heatmaps; each cell is one connection weight.
-uv run plot_weights.py --model models/ep5000-lr0003.pt --output visualizations/ep5000-weights.png
-
-# Draw the saved model's own architecture as PNG and SVG.
-uv run plot_architecture.py --model models/ep5000-lr0003.pt --output visualizations/ep5000-architecture.png
-
-# Export the layer diagram, then view it with Netron.
-uv run export_model.py --model models/ep5000-lr0003.pt --output models/ep5000-diagram.pt2
-uvx netron models/ep5000-diagram.pt2 --port 8080
-```
-
-Open [localhost:8080](http://127.0.0.1:8080/) while Netron runs. Heatmap colors describe parameter values, not landing quality. Netron is an optional viewer, fetched separately by `uvx`.
-
-## Train with a coding agent
-
-Once setup is complete, copy this follow-up message when you want to start training:
-
-> In lunar-landing-rl, read AGENTS.md and README.md. Train a fresh policy for 5,000 episodes with batch size 8, learning rate 0.003, and gamma 0.99. Keep the architecture from config.py and report it. Choose a new unused output filename under models/ so existing results are preserved. Record the effective config, exact command, console output, CSV, chart, and initial/final greedy evaluation scores. Use --no-open-plot without a desktop. After training, tell me the path and the matching uv run main.py --nn --model PATH --greedy command. Do not claim the training reward is a separate evaluation score.
-
-## Check the implementation
-
-```sh
-uv run python -m unittest discover -s tests -v
-```
-
-The tests cover discounted returns, update direction, equal-return stability, checkpoint compatibility, output/config behavior, episode termination, and matching sequential/parallel collection. A short training run checks the plumbing; it does not measure long-run learning quality.
-
-Built with [Gymnasium](https://github.com/Farama-Foundation/Gymnasium), [PyTorch](https://pytorch.org/), and [Matplotlib](https://matplotlib.org/). The policy-gradient explanation follows [OpenAI Spinning Up](https://spinningup.openai.com/en/latest/spinningup/rl_intro3.html).
+Built with [Gymnasium](https://github.com/Farama-Foundation/Gymnasium), [PyTorch](https://pytorch.org/), and [Matplotlib](https://matplotlib.org/).
