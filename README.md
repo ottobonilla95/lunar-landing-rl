@@ -4,6 +4,18 @@ Learn reinforcement learning by teaching a neural network to land a rocket in [G
 
 Gymnasium provides the physics, observations, actions, and rewards. This project adds keyboard controls, a PyTorch policy network, an explained **REINFORCE** training loop, parallel episode collection, and charts. You can start by watching the environment without training anything.
 
+## Our neural network
+
+![Lunar Lander policy: 8 state inputs, two hidden layers of 128 neurons with ReLU, 4 action scores, and Softmax action probabilities](docs/images/policy-architecture.png)
+
+The configured policy uses **8 → 128 → 128 → 4**, with **ReLU** after each hidden layer and **Softmax** converting the four action scores into probabilities. It has **18,180 trainable parameters**, including weights and biases. Circles abbreviate the hidden layers; each linear layer is fully connected.
+
+[Download the vector diagram (SVG)](docs/images/policy-architecture.svg). The diagram reflects the current architecture in `config.py`; saved models can have different architectures. Regenerate it with:
+
+```sh
+uv run plot_architecture.py --output docs/images/policy-architecture.png
+```
+
 ## Download and run
 
 Install [Git](https://git-scm.com/downloads) and [uv](https://docs.astral.sh/uv/getting-started/installation/), then run:
@@ -200,6 +212,7 @@ saved model → export_model.py → Netron diagram
 | `rollouts.py` | Collect complete episodes sequentially or in reusable processes |
 | `train.py` | Reward-to-go, policy update, evaluation, and training loop |
 | `plot_training.py` | Plot recorded loss and training reward |
+| `plot_architecture.py` | Draw layers, neuron counts, activations, and parameter counts |
 | `plot_weights.py` | Plot each linear layer's connection weights |
 | `export_model.py` | Export the computation graph for Netron |
 | `tests/test_training.py` | Learning math, checkpoints, and collection checks |
@@ -226,6 +239,9 @@ uv run plot_training.py models/ep5000-lr0003.csv
 
 # Create PNG and SVG heatmaps; each cell is one connection weight.
 uv run plot_weights.py --model models/ep5000-lr0003.pt --output visualizations/ep5000-weights.png
+
+# Draw the saved model's own architecture as PNG and SVG.
+uv run plot_architecture.py --model models/ep5000-lr0003.pt --output visualizations/ep5000-architecture.png
 
 # Export the layer diagram, then view it with Netron.
 uv run export_model.py --model models/ep5000-lr0003.pt --output models/ep5000-diagram.pt2
