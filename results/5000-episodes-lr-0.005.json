@@ -1,0 +1,16 @@
+{
+  "source": "User-supplied training chart and reported settings",
+  "episodes": 5000,
+  "learning_rate": 0.005,
+  "batch_size": null,
+  "hidden_sizes": null,
+  "activation": null,
+  "gamma": null,
+  "seed": null,
+  "workers": null,
+  "final_greedy_evaluation_mean": null,
+  "raw_csv": null,
+  "checkpoint": null,
+  "chart": "5000-episodes-lr-0.005.png",
+  "notes": "Unknown fields were not recorded for this chart. This is sampled training reward, not a separate evaluation benchmark. Current config.py does not establish the historical settings."
+}

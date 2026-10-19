@@ -121,6 +121,7 @@ To collect sequentially, use `--workers 1`. Parallel workers collect complete ep
 | LR 0.002 | 5,000 | 0.002 | [Chart](results/5000-episodes-lr-0.002.png) · [Metadata](results/5000-episodes-lr-0.002.json) |
 | LR 0.003 | 5,000 | 0.003 | [Chart](results/5000-episodes-lr-0.003.png) · [Metadata](results/5000-episodes-lr-0.003.json) |
 | LR 0.004 | 5,000 | 0.004 | [Chart](results/5000-episodes-lr-0.004.png) · [Metadata](results/5000-episodes-lr-0.004.json) |
+| LR 0.005 | 5,000 | 0.005 | [Chart](results/5000-episodes-lr-0.005.png) · [Metadata](results/5000-episodes-lr-0.005.json) |
 
 ### 5,000 episodes · learning rate 0.001
 
@@ -138,7 +139,7 @@ The smoothed training reward reaches roughly **100** around episode **1,400**, f
 
 ![Training loss and sampled training reward over 5,000 Lunar Lander episodes at learning rate 0.003](results/5000-episodes-lr-0.003.png)
 
-The smoothed training reward reaches roughly **200** around episode **1,400** and ends around **240–250**, with substantial drops and recoveries in between. This run finishes with the highest final smoothed training reward of the four published charts. These are approximate readings from the image; one run per learning rate does not establish a reliable ranking.
+The smoothed training reward reaches roughly **200** around episode **1,400** and ends around **240–250**, with substantial drops and recoveries in between. This run finishes with the highest final smoothed training reward of the five published charts. These are approximate readings from the image; one run per learning rate does not establish a reliable ranking.
 
 ### 5,000 episodes · learning rate 0.004
 
@@ -146,9 +147,15 @@ The smoothed training reward reaches roughly **200** around episode **1,400** an
 
 The smoothed training reward repeatedly reaches roughly **200–250**, but drops to roughly **−350** around episode **3,450**. It recovers, then ends **below zero** after another late drop. This run shows that strong intermediate rewards can be lost before training finishes. These are approximate observations from the image, not exact CSV statistics or a separate evaluation of the final model.
 
+### 5,000 episodes · learning rate 0.005
+
+![Training loss and sampled training reward over 5,000 Lunar Lander episodes at learning rate 0.005](results/5000-episodes-lr-0.005.png)
+
+The smoothed training reward rises from roughly **−200**, reaches peaks around **180–190**, and drops to roughly **−110** near episode **3,200** before recovering. It ends around **130–140**, below its earlier peaks. These are approximate readings from the image, not exact CSV statistics or a separate evaluation of the final model.
+
 The bottom panel is the mean episode reward in each collection batch; the bold line averages up to ten updates. The top panel is policy-gradient loss. This loss can be positive or negative and does not need to decrease across batches or reach zero. Reward trends and separate evaluation scores are more useful for judging landing behavior.
 
-**Recorded settings:** all four runs have 5,000 episodes, with learning rates 0.001, 0.002, 0.003, and 0.004 respectively. Architecture, batch size, gamma, seed, worker count, raw CSV, checkpoint, and evaluation scores were not supplied with these results. They are marked unknown in each run's metadata. The current defaults do not establish the historical settings. The example training command above starts a new experiment; it does not guarantee reproduction of these charts.
+**Recorded settings:** all five runs have 5,000 episodes, with learning rates 0.001, 0.002, 0.003, 0.004, and 0.005 respectively. Architecture, batch size, gamma, seed, worker count, raw CSV, checkpoint, and evaluation scores were not supplied with these results. They are marked unknown in each run's metadata. The current defaults do not establish the historical settings. The example training command above starts a new experiment; it does not guarantee reproduction of these charts.
 
 These charts record training performance. They do not establish a held-out success rate or prove that the environment is solved.
 
