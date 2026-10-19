@@ -5,7 +5,7 @@
   "batch_size": null,
   "hidden_sizes": null,
   "activation": null,
-  "gamma": null,
+  "gamma": 0.99,
   "seed": null,
   "workers": null,
   "final_greedy_evaluation_mean": null,
