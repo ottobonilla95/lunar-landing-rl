@@ -4,19 +4,57 @@ Learn reinforcement learning by teaching a neural network to land a rocket in [G
 
 Gymnasium provides the physics, observations, actions, and rewards. This project adds keyboard controls, a PyTorch policy network, an explained **REINFORCE** training loop, parallel episode collection, and charts. You can start by watching the environment without training anything.
 
-## Our neural network
+## Get started
 
-![Lunar Lander policy: 8 state inputs, two hidden layers of 128 neurons with ReLU, 4 action scores, and Softmax action probabilities](docs/images/policy-architecture.png)
+Choose **[a coding agent](#option-1-use-a-coding-agent-recommended)** to set up the project and explain how to use it, or follow the **[manual setup](#option-2-set-it-up-manually)** commands yourself.
 
-The configured policy uses **8 → 128 → 128 → 4**, with **ReLU** after each hidden layer and **Softmax** converting the four action scores into probabilities. It has **18,180 trainable parameters**, including weights and biases. Circles abbreviate the hidden layers; each linear layer is fully connected.
+### Option 1: Use a coding agent (recommended)
 
-[Download the vector diagram (SVG)](docs/images/policy-architecture.svg). The diagram reflects the current architecture in `config.py`; saved models can have different architectures. Regenerate it with:
+Copy the text below and paste it into your coding agent. It will read the project, set it up, open the demo where possible, and give you a beginner-friendly summary of how to use it.
 
-```sh
-uv run plot_architecture.py --output docs/images/policy-architecture.png
+```text
+Help me get started with this educational Lunar Lander reinforcement-learning project:
+https://github.com/ottobonilla95/lunar-landing-rl
+
+1. Check my operating system and whether Git and uv are available. If either is
+   missing, use the official installation instructions for my platform:
+   https://git-scm.com/downloads
+   https://docs.astral.sh/uv/getting-started/installation/
+
+2. Clone the repository into a new local directory and enter it. If I already
+   have this repository checked out, use that checkout and preserve my changes.
+
+3. Read AGENTS.md, README.md, docs/learning-guide.md, and the relevant Python
+   files (config.py, policy.py, main.py, train.py, and rollouts.py). Understand
+   what Gymnasium provides and what this project implements before explaining it.
+
+4. Run uv sync --locked, then:
+   uv run python -m unittest discover -s tests -v
+   Report whether setup and tests succeeded, and explain any blocker clearly.
+
+5. If a graphical desktop is available, launch uv run main.py --demo so I can
+   watch the fixed-rule lander. If no display is available, run uv run policy.py
+   instead and explain how I can open the rocket window on a desktop.
+
+6. Give me a short, beginner-friendly guide covering:
+   - What the project does and where you put it on my computer.
+   - The difference between manual control, the fixed-rule demo, an untrained
+     neural network, and a trained neural network.
+   - The current network's inputs, hidden layers, activations, and outputs,
+     reading the actual settings from config.py.
+   - The commands to fly manually, watch the demo, train a fresh network, and
+     watch that saved network. Use a new model filename and the same path in
+     the training and viewing commands.
+   - The keys for restarting and quitting, where models/CSV/charts are saved,
+     and which settings I can change in config.py.
+   - How training reward differs from the separate greedy evaluation score.
+
+Do not start training until I ask. Preserve existing models and experiment
+outputs. Finish by showing the exact commands I can run next from the project
+folder, so I can continue learning myself.
 ```
 
-## Download and run
+### Option 2: Set it up manually
 
 Install [Git](https://git-scm.com/downloads) and [uv](https://docs.astral.sh/uv/getting-started/installation/), then run:
 
@@ -33,7 +71,7 @@ The command opens a desktop window with Gymnasium's fixed-rule controller. It us
 
 A graphical desktop is required for the rocket window. Training and image generation can run without a display.
 
-### Try the other controllers
+#### Try the other controllers
 
 ```sh
 # Fly it yourself.
@@ -65,6 +103,18 @@ python main.py --demo
 ```
 
 On Windows PowerShell, activate with `.venv\Scripts\Activate.ps1` instead. The scripts are ordinary Python; `uv run` selects the correct environment for you.
+
+## Our neural network
+
+![Lunar Lander policy: 8 state inputs, two hidden layers of 128 neurons with ReLU, 4 action scores, and Softmax action probabilities](docs/images/policy-architecture.png)
+
+The configured policy uses **8 → 128 → 128 → 4**, with **ReLU** after each hidden layer and **Softmax** converting the four action scores into probabilities. It has **18,180 trainable parameters**, including weights and biases. Circles abbreviate the hidden layers; each linear layer is fully connected.
+
+[Download the vector diagram (SVG)](docs/images/policy-architecture.svg). The diagram reflects the current architecture in `config.py`; saved models can have different architectures. Regenerate it with:
+
+```sh
+uv run plot_architecture.py --output docs/images/policy-architecture.png
+```
 
 ## Train, then watch the saved network
 
@@ -250,13 +300,9 @@ uvx netron models/ep5000-diagram.pt2 --port 8080
 
 Open [localhost:8080](http://127.0.0.1:8080/) while Netron runs. Heatmap colors describe parameter values, not landing quality. Netron is an optional viewer, fetched separately by `uvx`.
 
-## Let your coding agent set it up
+## Train with a coding agent
 
-Copy this message into your coding agent:
-
-> Clone https://github.com/ottobonilla95/lunar-landing-rl.git into a new local directory, enter it, and read AGENTS.md and README.md. Use uv sync --locked, then run uv run python -m unittest discover -s tests -v. If uv is missing, follow its official installation instructions. On a graphical desktop, launch uv run main.py --demo so I can watch the fixed-rule lander. If no display is available, run uv run policy.py instead and explain that the rocket window requires a desktop. Do not start a training run yet. Tell me where the project is and the commands to run it myself.
-
-When you want the agent to train:
+Once setup is complete, copy this follow-up message when you want to start training:
 
 > In lunar-landing-rl, read AGENTS.md and README.md. Train a fresh policy for 5,000 episodes with batch size 8, learning rate 0.003, and gamma 0.99. Keep the architecture from config.py and report it. Choose a new unused output filename under models/ so existing results are preserved. Record the effective config, exact command, console output, CSV, chart, and initial/final greedy evaluation scores. Use --no-open-plot without a desktop. After training, tell me the path and the matching uv run main.py --nn --model PATH --greedy command. Do not claim the training reward is a separate evaluation score.
 
