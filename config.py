@@ -7,10 +7,10 @@ HIDDEN_SIZES = (128, 128)  # Number of neurons in each hidden layer.
 ACTIVATION = "relu"  # Choose "relu" or "tanh" for the hidden layers.
 
 # Training: each run starts a fresh network. CLI arguments override these defaults.
-EPISODES = 7000  # Total landing attempts.
+EPISODES = 5000  # Total landing attempts.
 BATCH_SIZE = 8  # Complete attempts collected before one weight update.
 PARALLEL_WORKERS = 8  # Benchmarked fastest here; set 1 for sequential collection.
-LEARNING_RATE = 0.004  # Adam's step size; try 0.0003 as another experiment.
+LEARNING_RATE = 0.003  # Adam's step size; try 0.0003 as another experiment.
 GAMMA = 0.99  # Discount factor; try 0.98 or 0.995.
 SEED = 42  # Controls initial weights, action sampling, and training starts.
 TORCH_THREADS = 1  # CPU threads used by PyTorch.
